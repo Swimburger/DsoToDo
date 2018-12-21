@@ -37,7 +37,7 @@ export class TasksService {
   }
 
   updateTaskList(id, taskList): Observable<any> {
-    return this.http.put(endpoint + id, JSON.stringify(taskList), httpOptions).pipe(
+    return this.http.post(endpoint + id, JSON.stringify(taskList), httpOptions).pipe(
       tap(_ => console.log(`updated taskList id=${id}`)),
       catchError(this.handleError<any>('updatetaskList'))
     );

@@ -7,9 +7,7 @@ import { TasksService } from '../tasks.service';
   styleUrls: ['./task-list-overview.component.sass']
 })
 export class TaskListOverviewComponent implements OnInit {
-
   taskLists: any = [];
-
   constructor(public tasksApi: TasksService) { }
 
   ngOnInit() {
@@ -17,20 +15,42 @@ export class TaskListOverviewComponent implements OnInit {
   }
 
   getTaskLists() {
-    this.taskLists = [];
-    this.tasksApi.getTaskLists().subscribe((data: {}) => {
-      console.log(data);
-      this.taskLists = data;
-    });
+    this.tasksApi.getTaskLists()
+      .subscribe((data) => {
+        this.taskLists = data;
+      }, (err) => {
+        console.log(err);
+      });
   }
 
-  delete(id) {
-    this.tasksApi.deleteTaskList(id)
+  checkTask(taskList, taskIndex) {
+    let [finishedTasks] = taskList.tasks.splice(taskIndex, 1);
+    taskList.finishedTasks.push(finishedTasks);
+    this.tasksApi.updateTaskList(taskList.id, taskList)
+      .subscribe(() => {
+        this.getTaskLists();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  unCheckTask(taskList, taskIndex) {
+    let [unFinishedTasks] = taskList.finishedTasks.splice(taskIndex, 1);
+    taskList.tasks.push(unFinishedTasks);
+    this.tasksApi.updateTaskList(taskList.id, taskList)
+      .subscribe(() => {
+        this.getTaskLists();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  deleteTaskList(taskList) {
+    this.tasksApi.deleteTaskList(taskList.id)
       .subscribe(res => {
         this.getTaskLists();
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 }

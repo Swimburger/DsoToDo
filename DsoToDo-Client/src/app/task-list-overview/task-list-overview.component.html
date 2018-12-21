@@ -1,7 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-4" *ngFor="let taskList of taskLists">
-      <app-task-list-details [taskList]="taskList"></app-task-list-details>
+      <app-task-list-details 
+        [taskList]="taskList"
+        (onDeleteClick)="deleteTaskList($event.taskList)"
+        (onTaskChecked)="checkTask($event.taskList, $event.taskIndex)"
+        (onTaskUnChecked)="unCheckTask($event.taskList, $event.taskIndex)">
+      </app-task-list-details>
     </div>
   </div>
 </div>
