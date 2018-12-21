@@ -1,0 +1,19 @@
+<div class="card task_list">
+  <div class="card-body">
+    <h5 class="card-title">{{taskList.title}}</h5>
+    <div class="task_list_unchecked_tasks">
+      <div class="checkbox" *ngFor="let task of taskList.tasks">
+        <label>
+          <input type="checkbox"> {{task}}
+        </label>
+      </div>
+    </div>
+    <div class="task_list_checked_tasks">
+      <div class="checkbox" *ngFor="let task of taskList.finishedTasks">
+        <label>
+          <input type="checkbox" checked> {{task}}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
