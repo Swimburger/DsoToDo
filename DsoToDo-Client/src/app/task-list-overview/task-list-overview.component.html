@@ -1,12 +1,13 @@
 <div class="container">
   <div class="row">
     <div class="col-4" *ngFor="let taskList of taskLists">
-      <app-task-list-details 
-        [taskList]="taskList"
-        (onDeleteClick)="deleteTaskList($event.taskList)"
-        (onSaveClick)="saveTaskList($event.taskList)"
-        >
+      <app-task-list-details [taskList]="taskList" (onDeleteClick)="deleteTaskList($event.taskList)" (onSaveClick)="saveTaskList($event.taskList)">
       </app-task-list-details>
     </div>
-  </div>
-</div>
+    <div class="col-4">
+      <div class="card task_list">
+        <div class="card-body">
+          <button class="btn btn-lg btn-primary" (click)="createTaskList()">Create new list</button>
+        </div>
+      </div>
+    </div>

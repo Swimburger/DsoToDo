@@ -23,6 +23,17 @@ export class TaskListOverviewComponent implements OnInit {
       });
   }
 
+  createTaskList(){
+    this.tasksApi.addTaskList({
+        title: "",
+        tasks: []
+      }).subscribe((taskList) => {
+        this.taskLists.push(taskList);
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
   saveTaskList(taskList) {
     this.tasksApi.updateTaskList(taskList.id, taskList)
       .subscribe((updatedTaskList) => {
@@ -36,7 +47,8 @@ export class TaskListOverviewComponent implements OnInit {
   deleteTaskList(taskList) {
     this.tasksApi.deleteTaskList(taskList.id)
       .subscribe(res => {
-        this.getTaskLists();
+        let taskListIndex = this.taskLists.findIndex(t => t.id === taskList.id);
+        this.taskLists.splice(taskListIndex, 1);
       }, (err) => {
         console.log(err);
       });

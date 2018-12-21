@@ -28,15 +28,16 @@ router.route('/task-lists')
     res.json(taskLists);
   })
   .post(function (req, res) {
-    var task = req.body;
-    taskLists.push(task);
-    res.json(task);
+    var taskList = req.body;
+    taskList.id = guid();
+    taskLists.push(taskList);
+    res.json(taskList);
   });
 
 router.route('/task-lists/:taskListId')
   .get(function (req, res) {
-    var taskListId = parseInt(req.params.taskListId);
-    var taskListIndex = taskLists.findIndex((taskList) => taskList.id === taskListId);
+    var taskListId = req.params.taskListId;
+    var taskListIndex = taskLists.findIndex((taskList) => taskList.id == taskListId);
     if (taskListIndex == -1) {
       return;
     }
@@ -44,8 +45,8 @@ router.route('/task-lists/:taskListId')
     res.json(taskLists[taskListIndex]);
   })
   .post(function (req, res) {
-    var taskListId = parseInt(req.params.taskListId);
-    var taskListIndex = taskLists.findIndex((task) => task.id === taskListId);
+    var taskListId = req.params.taskListId;
+    var taskListIndex = taskLists.findIndex((task) => task.id == taskListId);
     if (taskListIndex == -1) {
       res.send('404');
       return;
@@ -54,8 +55,8 @@ router.route('/task-lists/:taskListId')
     res.json(taskLists[taskListIndex]);
   })
   .delete(function (req, res) {
-    var taskListId = parseInt(req.params.taskListId);
-    var taskListIndex = taskLists.findIndex((task) => task.id === taskListId);
+    var taskListId = req.params.taskListId;
+    var taskListIndex = taskLists.findIndex((task) => task.id == taskListId);
     if (taskListIndex == -1) {
       res.send('404');
       return;
@@ -64,5 +65,14 @@ router.route('/task-lists/:taskListId')
     taskLists.splice(taskListIndex, 1);
     res.json(taskLists);
   });
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
 
 module.exports = router;
