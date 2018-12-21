@@ -7,7 +7,7 @@ import { TasksService } from '../tasks.service';
   styleUrls: ['./task-list-overview.component.sass']
 })
 export class TaskListOverviewComponent implements OnInit {
-  taskLists: any = [];
+  taskLists: any[] = [];
   constructor(public tasksApi: TasksService) { }
 
   ngOnInit() {
@@ -23,23 +23,11 @@ export class TaskListOverviewComponent implements OnInit {
       });
   }
 
-  checkTask(taskList, taskIndex) {
-    let [finishedTasks] = taskList.tasks.splice(taskIndex, 1);
-    taskList.finishedTasks.push(finishedTasks);
+  saveTaskList(taskList) {
     this.tasksApi.updateTaskList(taskList.id, taskList)
-      .subscribe(() => {
-        this.getTaskLists();
-      }, (err) => {
-        console.log(err);
-      });
-  }
-
-  unCheckTask(taskList, taskIndex) {
-    let [unFinishedTasks] = taskList.finishedTasks.splice(taskIndex, 1);
-    taskList.tasks.push(unFinishedTasks);
-    this.tasksApi.updateTaskList(taskList.id, taskList)
-      .subscribe(() => {
-        this.getTaskLists();
+      .subscribe((updatedTaskList) => {
+        let taskListIndex = this.taskLists.findIndex(t => t.id === taskList.id);
+        this.taskLists[taskListIndex] = updatedTaskList;
       }, (err) => {
         console.log(err);
       });

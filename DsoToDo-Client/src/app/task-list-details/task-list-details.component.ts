@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-task-list-details',
@@ -7,27 +8,37 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TaskListDetailsComponent implements OnInit {
   @Input() taskList: any;
+  @Output() onSaveClick: EventEmitter<any> = new EventEmitter();
   @Output() onDeleteClick: EventEmitter<any> = new EventEmitter();
-  @Output() onTaskChecked: EventEmitter<any> = new EventEmitter();
-  @Output() onTaskUnChecked: EventEmitter<any> = new EventEmitter();
+  originalTaskList: any;
 
   constructor() { }
 
   ngOnInit() {
+    this.originalTaskList = this.copy(this.taskList);
   }
 
-  raiseOnDeleteClick(event: any, taskList): void {
-    event.preventDefault();
+  raiseOnSaveClick(taskList): void {
+    this.onSaveClick.emit({ taskList });
+  }
+
+  cancelEdits(): void {
+    this.taskList = this.copy(this.originalTaskList);
+  }
+
+  addTask(taskList) {
+    taskList.tasks.push({ title: "", completed: false });
+  }
+
+  deleteTask(taskList, taskListIndex) {
+    taskList.tasks.splice(taskListIndex, 1);
+  }
+
+  raiseOnDeleteClick(taskList): void {
     this.onDeleteClick.emit({ taskList });
   }
 
-  raiseOnTaskChecked(event: any, taskList, taskIndex): void {
-    event.preventDefault();
-    this.onTaskChecked.emit({ taskList, taskIndex });
-  }
-
-  raiseOnTaskUnChecked(event: any, taskList, taskIndex): void {
-    event.preventDefault();
-    this.onTaskUnChecked.emit({ taskList, taskIndex });
+  copy(obj: any) {
+    return JSON.parse(JSON.stringify(obj));
   }
 }

@@ -6,22 +6,18 @@ var taskLists = [
     "id": 1,
     "title": "Groceries",
     "tasks": [
-      "Moar Bacon",
-      "All the bacon"
-    ],
-    "finishedTasks": [
-      "Eggs",
-      "Bacon"
+      { "title": "Eggs", "completed": false },
+      { "title": "Bacon", "completed": false },
+      { "title": "Moar Bacon", "completed": true },
+      { "title": "All the bacon", "completed": true },
     ]
   },
   {
     "id": 2,
     "title": "DevSecOps Front-End",
     "tasks": [
-      "Create Angular App",
-      "Publish to GitHub"
-    ],
-    "finishedTasks": [
+      { "title": "Create Angular App", "completed": false },
+      { "title": "Publish to GitHub", "completed": false }
     ]
   }
 ];
@@ -41,7 +37,7 @@ router.route('/task-lists/:taskListId')
   .get(function (req, res) {
     var taskListId = parseInt(req.params.taskListId);
     var taskListIndex = taskLists.findIndex((taskList) => taskList.id === taskListId);
-    if(taskListIndex == -1){
+    if (taskListIndex == -1) {
       return;
     }
 
@@ -50,7 +46,7 @@ router.route('/task-lists/:taskListId')
   .post(function (req, res) {
     var taskListId = parseInt(req.params.taskListId);
     var taskListIndex = taskLists.findIndex((task) => task.id === taskListId);
-    if(taskListIndex == -1){
+    if (taskListIndex == -1) {
       res.send('404');
       return;
     }
@@ -60,7 +56,7 @@ router.route('/task-lists/:taskListId')
   .delete(function (req, res) {
     var taskListId = parseInt(req.params.taskListId);
     var taskListIndex = taskLists.findIndex((task) => task.id === taskListId);
-    if(taskListIndex == -1){
+    if (taskListIndex == -1) {
       res.send('404');
       return;
     }

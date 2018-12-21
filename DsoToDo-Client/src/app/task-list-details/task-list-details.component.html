@@ -1,19 +1,23 @@
-<div class="card task_list">
-  <div class="card-body">
-    <h5 class="card-title">{{taskList.title}} <a href="#" class="pull-right" (click)="raiseOnDeleteClick($event, taskList)">x</a></h5>
-    <div class="task_list_unchecked_tasks">
-      <div class="checkbox" *ngFor="let task of taskList.tasks; index as taskIndex">
-        <label>
-          <input type="checkbox" (change)="raiseOnTaskChecked($event, taskList, taskIndex)"> {{task}}
-        </label>
+<form #taskListForm="ngForm">
+  <div class="card task_list">
+    <div class="card-body">
+      <div class="card-title">
+        <input type="text" [(ngModel)]="taskList.title"  name="title">
+        <button class="btn btn-link pull-right" (click)="raiseOnDeleteClick(taskList)">x</button>
       </div>
-    </div>
-    <div class="task_list_checked_tasks">
-      <div class="checkbox" *ngFor="let task of taskList.finishedTasks">
-        <label>
-          <input type="checkbox" checked (change)="raiseOnTaskUnChecked($event, taskList, taskIndex)"> {{task}}
-        </label>
+      <div class="task_list_tasks">
+        <div class="checkbox" *ngFor="let task of taskList.tasks; index as taskIndex">
+          <label>
+            <input type="checkbox" [(ngModel)]="task.completed" name="unchecked-task-checkbox{{taskIndex}}" />
+            <input type="text" [(ngModel)]="task.title" name="unchecked-task-text{{taskIndex}}" />
+            <button class="btn btn-link pull-right" (click)="taskListForm.form.markAsDirty(); deleteTask(taskList, taskIndex)">x</button>
+          </label>
+        </div>
       </div>
+      <button class="btn btn-link" (click)="taskListForm.form.markAsDirty(); addTask(taskList)">+</button>
+      <br>
+      <button *ngIf="taskListForm.dirty" class="btn btn-primary" (click)="raiseOnSaveClick(taskList)">Save</button>
+      <button *ngIf="taskListForm.dirty" class="btn btn-outline-warning" (click)="taskListForm.form.markAsPristine(); cancelEdits();">Cancel</button>
     </div>
   </div>
-</div>
+</form>

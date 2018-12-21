@@ -4,8 +4,8 @@
       <app-task-list-details 
         [taskList]="taskList"
         (onDeleteClick)="deleteTaskList($event.taskList)"
-        (onTaskChecked)="checkTask($event.taskList, $event.taskIndex)"
-        (onTaskUnChecked)="unCheckTask($event.taskList, $event.taskIndex)">
+        (onSaveClick)="saveTaskList($event.taskList)"
+        >
       </app-task-list-details>
     </div>
   </div>
